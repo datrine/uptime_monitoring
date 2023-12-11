@@ -45,6 +45,10 @@ func check(ctx context.Context, site *site.Site) error {
 		return err
 	}
 
+	if err := publishOnTransition(ctx, site, result.Up); err != nil {
+		return err
+	}
+
 	_, err = sqldb.Exec(ctx, `INSERT INTO checks (site_id,up,checked_at)
 	VALUES ($1,$2,NOW())`, site.ID, result.Up)
 	return err
